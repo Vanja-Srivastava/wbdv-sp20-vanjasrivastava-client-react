@@ -1,0 +1,157 @@
+.wbdv-vanja-cross-icon{
+    color: white;
+}
+
+.wbdv-vanja-tabs {
+    color: white;
+}
+
+
+.wbdv-vanja-module-list-add{
+    position: fixed;
+    bottom: 50px;
+    left: 200px;
+}
+.split {
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.wbdv-vanja-module-color {
+    background-color: #343a40 !important;
+    color: white;
+}
+.wbdv-vanja-module-active{
+    background-color: blue;
+}
+.wbdv-vanja-module-color .active {
+    background-color: blue;
+}
+
+.wbdv-vanja-lessons .active {
+    background-color: #212529 !important;
+}
+/* Control the left side */
+.left {
+    left: 0;
+    height: 100%;
+    width: 30%;
+    background-color: #212529;
+}
+
+/* Control the right side */
+.right {
+    right: 0;
+    height: 100%;
+    width: 70%;
+    background-color: white;
+}
+
+.navPaddingTop {
+    padding-top: 80px;
+}
+
+.wbdv-vanja-leftdiv{
+    border-style: solid;
+    border-color: #343a40;
+    border-width: 1px;
+
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 20px;
+    vertical-align: middle;
+    margin-top: 8px;
+}
+
+.switch input {display:none;}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #A1A6AB;
+    -webkit-transition: .4s;
+    transition: .4s;
+
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 14px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #800080;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+
+
+
+.wbdv-vanja-topics .active {
+    background-color: #212529 !important;
+
+}
+
+.wbdv-vanja-my-custom-nav-pills-border {
+    background-color: #595959 !important;
+    color: white;
+
+}
+
+.wbdv-vanja-my-headingwidget-Arrow {
+    background-color: #ffa31a !important;
+    color: black
+
+}
+.wbdv-vanja-myheadingwidget-Cross {
+    background-color: red !important;
+    color: white
+
+}
+.wbdv-vanja-rightborder-div{
+    height: 350px;
+    border-style: solid;
+    border-width: 1px;
+    background-color: #f2f2f2;
+}
+.wbdv-vanja-rightdivadd{
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+}
