@@ -90,6 +90,8 @@ class CourseTableComponent extends React.Component{
                                             <CourseRow
                                                 key = {index}
                                                 course={course}
+                                                courseIndex = {index}
+                                                allcourses = {this.props.courses}
                                                 editCourse = {this.props.editCourse}
                                                 updateCourse = {this.props.updateCourse}
                                                 deleteCourse={this.props.deleteCourse}/>

@@ -53,12 +53,12 @@ class CourseManagerContainer extends React.Component {
 
 
     getCourseById = (editingcourse) =>
-            findCourseById(editingcourse._id)
-                .then(course => {
-                    this.setState({
-                        courseTobeEdited: course
-                    })
+        findCourseById(editingcourse._id)
+            .then(course => {
+                this.setState({
+                    courseTobeEdited: course
                 })
+            })
 
 
 

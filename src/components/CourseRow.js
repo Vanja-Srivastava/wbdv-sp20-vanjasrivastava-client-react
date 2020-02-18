@@ -9,7 +9,8 @@ class CourseRow extends React.Component {
     state = {
         inputediting : false,
         showEditorOptions : false,
-        course: this.props.course
+        course: this.props.course,
+        selectedCourse: ''
     }
 
     componentDidMount = async () => {
@@ -18,10 +19,26 @@ class CourseRow extends React.Component {
             newCourseTitle: this.props.course.title
         })
     }
-    showEditingOptions = () =>
+    abc = (index) => {
+
         this.setState({
-            showEditorOptions: true
+            // id={`${course.id}`}
+            // selectedCourse: this.props.courses.filter(function (crs,index) {
+            //     return crs.
+            // })
+
+            selectedCourse: this.props.allcourses[index].title
         })
+
+    }
+
+    showEditingOptions = (index) => {
+
+        this.setState({
+            // id={`${course.id}`}
+            showEditorOptions: true,
+            selectedCourse: this.props.allcourses[index]
+        })}
 
     showInput = () =>
         this.setState({
@@ -32,13 +49,14 @@ class CourseRow extends React.Component {
 
     render() {
         return (
-            <tr className="courseRow " onClick={this.showEditingOptions}>
+            <tr className="courseRow " onClick={ () =>
+            {this.showEditingOptions(this.props.courseIndex);}}>
                 <td className="wbdv-vanja-table_head_title_Width text-center">
                     <div>
                         <div>
                             <FontAwesomeIcon icon="file-alt" className="fas blueIcon"/> &nbsp; &nbsp; &nbsp;
 
-                            {!this.state.inputediting && <Link to={`/course/${this.props.course.id}`} className="courseStyle" id={`${this.props.course.id}`}>
+                            {!this.state.inputediting && <Link to={`/course/${this.props.course._id}`} className="courseStyle" id={`${this.props.course._id}`}>
                                 &nbsp;&nbsp;&nbsp;&nbsp;{this.state.course.title} {this.props.course.name}
                             </Link>
                             }
@@ -65,24 +83,24 @@ class CourseRow extends React.Component {
                 {
                     <td className="actionCol text-center">
                         { !this.state.inputediting && this.state.showEditorOptions && <button className="btn" onClick={() =>
-                            {this.props.editCourse(this.props.course);this.showInput();}}><FontAwesomeIcon icon="pencil-alt" className="fas greyIcon"/>
+                        {this.props.editCourse(this.props.course);this.showInput();}}><FontAwesomeIcon icon="pencil-alt" className="fas greyIcon"/>
                         </button>
                         }
                         {!this.state.inputediting && this.state.showEditorOptions &&
-                        <button className="btn" onClick={() => this.props.deleteCourse(this.state.course) }>
+                        <button className="btn" onClick={() => this.props.deleteCourse(this.state.selectedCourse) }>
                             <FontAwesomeIcon icon="trash-alt" className="fas greyIcon"/>
                         </button>
                         }
                         { this.state.inputediting && this.state.showEditorOptions && <button className="btn"
-                           onClick={(e) =>
-                                  {   updateCourse(this.state.course._id,this.state.course).then(status => {
-                                      this.setState( {
-                                          course: this.state.course,
-                                          inputediting: false
-                                      })
-                                  })
+                                                                                             onClick={(e) =>
+                                                                                             {   updateCourse(this.state.course._id,this.state.course).then(status => {
+                                                                                                 this.setState( {
+                                                                                                     course: this.state.course,
+                                                                                                     inputediting: false
+                                                                                                 })
+                                                                                             })
 
-                            }}>
+                                                                                             }}>
                             <FontAwesomeIcon icon="check" className="fas greyIcon"/>
                         </button>
                         }

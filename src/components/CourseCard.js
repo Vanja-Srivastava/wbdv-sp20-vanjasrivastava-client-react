@@ -28,7 +28,7 @@ class CourseCard extends React.Component {
     render() {
         return (
             <div className="card">
-                <Link to={`/course/${this.props.course.id}`} id={`${this.props.course.id}`} className="btn">
+                <Link to={`/course/${this.props.course._id}`} id={`${this.props.course._id}`} className="btn">
                     <img className="card-img-top"
                          src={require('../resources/file_image.jpeg')}/>
                 </Link>
@@ -43,16 +43,16 @@ class CourseCard extends React.Component {
                         }
                         {
                             this.state.inputediting &&
-                                <input className="form-control transparent-input w-100 ml-4" type="text"
-                                       value={this.state.course.title} onChange={(e) =>
-                                    this.setState({
-                                        course: {
-                                            ...this.state.course,
-                                            title: e.target.value
-                                        }
-                                    })}
-                                >
-                                </input>
+                            <input className="form-control transparent-input w-100 ml-4" type="text"
+                                   value={this.state.course.title} onChange={(e) =>
+                                this.setState({
+                                    course: {
+                                        ...this.state.course,
+                                        title: e.target.value
+                                    }
+                                })}
+                            >
+                            </input>
 
                         }
                     </div>

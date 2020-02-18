@@ -16,6 +16,24 @@ import {
 library.add(faArrowDown,faArrowUp, faTimes, faCircle, faPlus);
 
 class CourseEditorComponent extends React.Component {
+    constructor(props) {
+        super(props)
+        const courseId = (props.match.params.id);
+        this.state = {
+            firstLoad: false,
+            courseId: courseId,
+            course: {},
+            module: {},
+            modules: [],
+            lesson: {},
+            lessons: [],
+            topic: [],
+            topics: []
+        }
+    }
+
+
+
     render() {
         return (
 
@@ -32,7 +50,7 @@ class CourseEditorComponent extends React.Component {
                     </div>
 
                     <div className="col-3 text-white h4 pt-1 d-none d-sm-none d-md-block ">
-                        <label className="wbdv-label wbdv-course-manager">Course Manager</label>
+                        <label className="wbdv-label wbdv-course-manager">Course Manager </label>
                     </div>
 
 
@@ -175,10 +193,10 @@ class CourseEditorComponent extends React.Component {
                                             className="fa-stack wbdv-button wbdv-add-course ml-2 mt-1 col-1">
                         <FontAwesomeIcon icon="arrow-down" className="fas fa-arrow-down fa-stack-1x wbdv-vanja-my-headingwidget-Arrow"/>
                         </span>
-                                </a>
+                                    </a>
                                     <select className="col-7 ml-1" id="responsive-role">
-                                    <option>Heading</option>
-                                </select> <a href="#" id="addCourse">
+                                        <option>Heading</option>
+                                    </select> <a href="#" id="addCourse">
 
                                     <span
                                         className="fa-stack wbdv-button wbdv-add-course col-1">
