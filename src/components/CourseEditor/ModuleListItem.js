@@ -3,10 +3,9 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faTimes, faPencilAlt} from "@fortawesome/free-solid-svg-icons";
 import {library} from "@fortawesome/fontawesome-svg-core";
 
-const ModuleListItem = ({module}) =>
+const ModuleListItem = ({module, selectModule, deleteModule, chooseForUpdate}) =>
     <li
-
-        // onClick={() => this.props.selectModule(this.props.module)}
+        // onClick={() => selectModule(module)}
         className="nav-item module">
         <div>
             <div className="row">
@@ -15,10 +14,10 @@ const ModuleListItem = ({module}) =>
                     href="#" id="module1">{module.title}</a></div>
                 <div className="col2 text-right">
                     <button className="btn text-white actionButton"
-                             title="Edit"><FontAwesomeIcon
+                            onClick={() => chooseForUpdate(module)} title="Edit"><FontAwesomeIcon
                         icon="pencil-alt" className="fas"/></button>
                     <button className="btn text-white actionButton"
-                            title="Delete"><FontAwesomeIcon
+                            onClick={() => deleteModule(module)} title="Delete"><FontAwesomeIcon
                         icon="times" className="fas"/></button>
                 </div>
             </div>

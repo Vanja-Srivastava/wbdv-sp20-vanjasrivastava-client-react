@@ -3,6 +3,8 @@ import ModuleListItem from "./ModuleListItem";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faTimes, faPencilAlt, faCheck} from "@fortawesome/free-solid-svg-icons";
 import {library} from "@fortawesome/fontawesome-svg-core";
+import {createModule, findModulesForCourse, updateModule,deleteModule} from "../../services/ModuleService";
+
 library.add(faPlus, faTimes, faPencilAlt, faCheck);
 
 class ModuleList extends React.Component {
@@ -33,6 +35,86 @@ class ModuleList extends React.Component {
             })
         }
     }
+
+    createNewModule = () => {
+        let newModules;
+        createModule(this.state.module,this.props.currentCourseId)
+            .then(() => findModulesForCourse(this.props.currentCourseId))
+            .then(modules => newModules = modules)
+            .then(() =>
+                this.setState({
+                    module:{},
+                    modules: newModules,
+                    formField: ''
+                })
+            )
+
+
+    }
+
+    deleteThisModule = (module) => {
+        let newModules;
+        deleteModule(module._id)
+            .then(() => findModulesForCourse(this.props.currentCourseId))
+            .then(modules => newModules = modules)
+            .then(() =>
+                this.setState({
+                    modules: newModules
+                })
+            )
+    }
+
+    titleChanged = (event) => {
+        this.setState(
+            {
+                module: {title: event.target.value},
+                formField: event.target.value
+            });
+    }
+
+    chooseForUpdate = (module) => {
+        this.setState({
+            formField: module.title,
+            updateVisibility: '',
+            toUpdateId: module._id
+        })
+    }
+
+    updateThisModule = () => {
+        if (this.state.module.title !== '') {
+            const moduleToUpdate = Object.assign({id: this.state.toUpdateId}, this.state.module);
+            let updatedModules;
+            updateModule(this.state.toUpdateId,moduleToUpdate)
+                .then(() => findModulesForCourse(this.props.currentCourseId))
+                .then(modules => updatedModules = modules)
+                .then(() =>
+                    this.setState({
+                        module: {
+                            title: '',
+                            lessons: [{
+                                title: '',
+                                topics: [{
+                                    title: '',
+                                    widgets: []
+                                }]
+                            }]
+                        },
+                        modules: updatedModules,
+                        formField: '',
+                        updateVisibility: 'disabled'
+                    })
+                )
+        } else {
+            this.setState({
+                    formField: '',
+                    updateVisibility: 'disabled'
+                }
+            )
+        }
+
+    }
+
+
     render() {
         return (
             <div>

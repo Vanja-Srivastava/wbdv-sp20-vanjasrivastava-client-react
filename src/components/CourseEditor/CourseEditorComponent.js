@@ -7,6 +7,11 @@ import TopicPillsComponent from "./TopicPillsComponent";
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import '../../styles/CourseEditorComponent.style.client.css';
+import {createModule, findModulesForCourse, updateModule,deleteModule} from "../../services/ModuleService";
+import {findAllCourses, deleteCourse, createCourse,findCourseById,updateCourse} from "../../services/CourseService";
+import {createStore} from 'redux'
+import {Provider} from 'react-redux'
+
 import {
     faArrowUp,
     faArrowDown,
@@ -22,6 +27,7 @@ class CourseEditorComponent extends React.Component {
     constructor(props) {
         super(props)
         const courseId = (props.match.params.id);
+
         this.state = {
             firstLoad: false,
             courseId: courseId,
@@ -33,6 +39,26 @@ class CourseEditorComponent extends React.Component {
             topic: [],
             topics: []
         }
+    }
+
+    componentDidMount() {
+        let currentCourse,  currentModules;
+        if (this.state.firstLoad == false) {
+            findCourseById(this.state.courseId)
+                .then(course => currentCourse = course)
+                .then(() => findModulesForCourse(this.state.courseId))
+                .then(modules => currentModules = modules)
+                .then(() => {
+                    this.setState({
+                        course: currentCourse,
+
+                        modules: currentModules,
+
+                        firstLoad: true
+                    })
+                })
+        }
+
     }
 
 
@@ -57,8 +83,8 @@ class CourseEditorComponent extends React.Component {
                                id="courseName"> {this.state.course.title} {this.state.course.name} </label>
                     </div>
                     <div className="col-lg-8 col-md-6 col-sm-4 lessonDiv">
-                        <LessonTabComponent
-                        />
+                        {/*<LessonTabComponent*/}
+                        {/*/>*/}
                     </div>
 
 
@@ -69,22 +95,19 @@ class CourseEditorComponent extends React.Component {
                     {this.state.firstLoad &&
                     <ModuleListComponent
                         selectModule={this.selectModule}
-                        // modules={this.state.course.modules}/>
-                        // setCurrentLessonsAndTopics={this.setCurrentLessonsAndTopics}
+                        currentCourseId = {this.state.courseId}
                         modules={this.state.modules}/>}
-                    {/*modules={this.state.coursemodules}/>}*/}
-
                 </div>
                 <div className="split right navPaddingTop">
                     <div className="row  text-center topicDiv">
-                        <TopicPillsComponent
-                            topics={this.state.topics}
-                            lesson={this.state.lesson}
-                            selectTopic={this.selectTopic}
-                            createTopic={this.createNewTopic}
-                            deleteTopic={this.deleteThisTopic}
-                            updateTopic={this.updateThisTopic}
-                        />
+                        {/*<TopicPillsComponent*/}
+                        {/*    topics={this.state.topics}*/}
+                        {/*    lesson={this.state.lesson}*/}
+                        {/*    selectTopic={this.selectTopic}*/}
+                        {/*    createTopic={this.createNewTopic}*/}
+                        {/*    deleteTopic={this.deleteThisTopic}*/}
+                        {/*    updateTopic={this.updateThisTopic}*/}
+                        {/*/>*/}
                     </div>
 
                     <div className="row">
