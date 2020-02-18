@@ -1,9 +1,12 @@
 import React from "react";
 import {Nav} from 'react-bootstrap';
 import {Link,} from 'react-router-dom';
+import LessonTabComponent from "./LessonTabComponent";
+import ModuleListComponent from "./ModuleListComponent";
+import TopicPillsComponent from "./TopicPillsComponent";
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import '../../styles/CourseEditorComponent.css';
+import '../../styles/CourseEditorComponent.style.client.css';
 import {
     faArrowUp,
     faArrowDown,
@@ -49,104 +52,39 @@ class CourseEditorComponent extends React.Component {
 
                     </div>
 
-                    <div className="col-3 text-white h4 pt-1 d-none d-sm-none d-md-block ">
-                        <label className="wbdv-label wbdv-course-manager">Course Manager </label>
+                    <div className="col-lg-2 col-md-3 text-white h4 pt-1 d-none d-sm-none d-md-block courseNameDiv">
+                        <label htmlFor="courseTitle"
+                               id="courseName"> {this.state.course.title} {this.state.course.name} </label>
+                    </div>
+                    <div className="col-lg-8 col-md-6 col-sm-4 lessonDiv">
+                        <LessonTabComponent
+                        />
                     </div>
 
 
-                    <div className="col-6">
-                        <ul className="nav nav-pills border-0 wbdv-vanja-lessons">
-                            <li className="nav-item "><a
-                                className="nav-link wbdv-vanja-tabs wbdv-build-tab" href="#">Build</a></li>
-                            <li className="nav-item"><a
-                                className="nav-link wbdv-vanja-tabs wbdv-page-tab active" href="#">Pages</a></li>
-                            <li className="nav-item"><a
-                                className="nav-link wbdv-theme-tab wbdv-vanja-tabs" href="#">Theme</a></li>
-                            <li className="nav-item"><a
-                                className="nav-link wbdv-store-tab wbdv-vanja-tabs" href="#">Store</a></li>
-                            <li className="nav-item"><a
-                                className="nav-link wbdv-app-tab wbdv-vanja-tabs" href="#">App</a></li>
-                            <li className="nav-item"><a
-                                className="nav-link wbdv-settings-tab wbdv-vanja-tabs" href="#">Settings</a></li>
-
-                        </ul>
-                    </div>
-
-                    <div className="col-1 text-right">
-                        <button className="btn wbdv-button wbdv-new-page-btn" id="nav-newpage" onClick={this.props.createCourse}
-                        > <span
-                            className="fa-stack">
-                        <FontAwesomeIcon icon="plus" className="fas fa-stack-1x fa-inverse"/>
-                        </span>
-
-                        </button>
-
-                    </div>
 
                 </Nav>
 
                 <div className="split left navPaddingTop">
-                    <div className="wbdv-vanja-leftdiv ml-2 mr-2">
-                        <div className="row">
-                            <ul className="list-group wbdv-module-list">
-                                <li
-                                    className="list-group-item wbdv-module-item wbdv-module-item-title ml-5 my-2 w-100 mr-7 wbdv-vanja-module-color ">Module
-                                    1 jQuery
-                                    <button className="btn ml-5 wbdv-vanja-module-color wbdv-module-item-delete-btn"> <span
-                                        className="fa-stack">
-                        <FontAwesomeIcon icon="times" className="fas fa-times wbdv-vanja-cross-icon"/>
-                        </span>
-
-                                    </button>
-
-                                </li>
-
-                            </ul>
-                            <div className="wbdv-vanja-module-list-add">
-                                <button className="btn addModule" id="addModule"> <span
-                                    className="fa-stack">
-                        <FontAwesomeIcon icon="plus" className="fas fa-plus fa-stack-1x fa-inverse"/>
-                        </span>
-
-                                </button>
-                            </div>
-                        </div>
-
-
-                    </div>
+                    {this.state.firstLoad &&
+                    <ModuleListComponent
+                        selectModule={this.selectModule}
+                        // modules={this.state.course.modules}/>
+                        // setCurrentLessonsAndTopics={this.setCurrentLessonsAndTopics}
+                        modules={this.state.modules}/>}
+                    {/*modules={this.state.coursemodules}/>}*/}
 
                 </div>
                 <div className="split right navPaddingTop">
-                    <div className="row">
-                        <ul className="nav nav-pills wbdv-vanja-topics wbdv-topic-pill-list">
-
-
-                            <li className="nav-item"><a
-                                className="nav-link wbdv-topic-pill wbdv-vanja-my-custom-nav-pills-border ml-5 pl-4 pr-4"
-                                href="#"> Topic 1 </a></li>
-                            <li className="nav-item"><a
-                                className="active wbdv-topic-pill nav-link ml-3 pl-4 pr-4" href="#">
-                                Topic 2 </a></li>
-                            <li className="nav-item"><a
-                                className="nav-link wbdv-topic-pill wbdv-vanja-my-custom-nav-pills-border ml-3 pl-4 pr-4"
-                                href="#"> Topic 3 </a></li>
-
-                            <li className="nav-item"><a
-                                className="nav-link wbdv-topic-pill wbdv-vanja-my-custom-nav-pills-border ml-3 pl-4 pr-4"
-                                href="#"> Topic 4 </a></li>
-
-                        </ul>
-                        <div className="col-2">
-
-                            <a href="#" id="addTopic">
-                                <span
-                                    className="fa-stack wbdv-topic-add-btn mt-1">
-                        <FontAwesomeIcon icon="plus" className="fas fa-plus fa-stack-1x fa-inverse wbdv-vanja-my-custom-nav-pills-border"/>
-                        </span>
-
-                            </a>
-
-                        </div>
+                    <div className="row  text-center topicDiv">
+                        <TopicPillsComponent
+                            topics={this.state.topics}
+                            lesson={this.state.lesson}
+                            selectTopic={this.selectTopic}
+                            createTopic={this.createNewTopic}
+                            deleteTopic={this.deleteThisTopic}
+                            updateTopic={this.updateThisTopic}
+                        />
                     </div>
 
                     <div className="row">
