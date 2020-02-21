@@ -16,14 +16,35 @@ class TopicPillsComponent
     }
 
 
+    titleChanged = (event) => {
+        this.setState(
+            {
+                topic: {title: event.target.value},
+                formField: event.target.value
+            });
+    }
+    chooseForUpdate = (topic) => {
+        this.setState({
+            formField: topic.title,
+            updateVisibility: '',
+            toUpdateId: topic.id
+        })
+    }
+
+    clearForm = () =>
+        this.setState({
+            formField: '',
+            updateVisibility: 'disabled',
+        })
+
     render() {
         let topics = "";
-        if (this.props.lesson.topics) {
+        if (this.props.topics) {
             topics =
-                this.props.lesson.topics.map(topic =>
+                this.props.topics.map(topic =>
 
                     <li className="nav-item topic">
-                        <button className="btn text-white nav-link" onClick={
+                        <button className="btn text-black nav-link" onClick={
                             () => {
                                 this.props.selectTopic(topic)
                             }}
@@ -73,6 +94,9 @@ class TopicPillsComponent
 
         )
     }
+
+
+
 
 }
 

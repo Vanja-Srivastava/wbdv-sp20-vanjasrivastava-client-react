@@ -7,9 +7,10 @@ import TopicPillsComponent from "./TopicPillsComponent";
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import '../../styles/CourseEditorComponent.style.client.css';
-import {createModule, findModulesForCourse} from "../../services/ModuleService";
+import {findModulesForCourse} from "../../services/ModuleService";
 import {findCourseById} from "../../services/CourseService";
 import {createLesson,deleteLesson,updateLesson,findLessonsForModule} from "../../services/LessonService";
+import {createTopic,deleteTopic,updateTopic,findTopicsForLesson} from "../../services/TopicService";
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
 
@@ -40,7 +41,8 @@ class CourseEditorComponent extends React.Component {
             topic: [],
             topics: [],
             selectedLessonId: "",
-            selectedModuleId: ""
+            selectedModuleId: "",
+            selectedTopicId: ""
 
         }
     }
@@ -78,7 +80,6 @@ class CourseEditorComponent extends React.Component {
         findLessonsForModule(module._id)
             .then(
                 lessons => {
-                    debugger
                 this.setState({
                     module: module,
                     lessons: lessons
@@ -88,19 +89,20 @@ class CourseEditorComponent extends React.Component {
     }
 
     selectLesson = lesson => {
-        debugger
         this.setState({selectedLessonId: lesson._id})
-        findLessonsForModule(this.state.selectedModuleId)
+        findTopicsForLesson(this.state.selectedLessonId)
             .then(
-                lessons => {
-                    debugger
+                topic => {
                     this.setState({
-                        module: module,
-                        lessons: lessons
+                        topics: topic
                     })
                 })
 
 
+    }
+
+    selectTopic = topic => {
+        this.setState({selectedTopicId: topic._id})
     }
 
     deleteThisLesson = (lesson) => {
@@ -126,7 +128,6 @@ class CourseEditorComponent extends React.Component {
 
     }
 
-
     updateThisLesson = lesson => {
         updateLesson(this.state.selectedLessonId, lesson)
             .then(() => findLessonsForModule(this.state.selectedModuleId))
@@ -139,6 +140,37 @@ class CourseEditorComponent extends React.Component {
 
     }
 
+    deleteThisTopic = (topic) => {
+        deleteTopic(this.state.selectedTopicId)
+            .then(() => findTopicsForLesson(this.state.selectedLessonId))
+            .then((topic) =>
+                this.setState({
+                    topics: topic
+                })
+            )
+    }
+    createNewTopic = (topic) => {
+        createTopic(topic,this.state.selectedLessonId)
+            .then(() => findTopicsForLesson(this.state.selectedLessonId))
+            .then((topic) =>
+                this.setState({
+                    topics: topic
+                })
+            )
+
+
+    }
+
+
+    updateThisTopic = topic => {
+        updateTopic(this.state.selectedTopicId,topic)
+            .then(() => findTopicsForLesson(this.state.selectedLessonId))
+            .then((topic) =>
+                this.setState({
+                    topics: topic
+                })
+            )
+    }
 
     render() {
         return (
@@ -185,14 +217,14 @@ class CourseEditorComponent extends React.Component {
                 </div>
                 <div className="split right navPaddingTop belowNavBar">
                     <div className="row  text-center topicDiv">
-                        {/*<TopicPillsComponent*/}
-                        {/*    topics={this.state.topics}*/}
-                        {/*    lesson={this.state.lesson}*/}
-                        {/*    selectTopic={this.selectTopic}*/}
-                        {/*    createTopic={this.createNewTopic}*/}
-                        {/*    deleteTopic={this.deleteThisTopic}*/}
-                        {/*    updateTopic={this.updateThisTopic}*/}
-                        {/*/>*/}
+                        <TopicPillsComponent
+                            topics={this.state.topics}
+                            lesson={this.state.lesson}
+                            selectTopic={this.selectTopic}
+                            createTopic={this.createNewTopic}
+                            deleteTopic={this.deleteThisTopic}
+                            updateTopic={this.updateThisTopic}
+                        />
                     </div>
 
                     <div className="row">
