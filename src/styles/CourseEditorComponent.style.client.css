@@ -53,6 +53,9 @@
 .navPaddingTop {
     padding-top: 80px;
 }
+.belowNavBar {
+    padding-top: 200px;
+}
 
 .wbdv-vanja-leftdiv{
     border-style: solid;

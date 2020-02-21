@@ -11,7 +11,7 @@ export const createModule = (module,courseId) =>
 
 
 export const findModulesForCourse = async (courseId) => {
-    const response = await fetch(`${MODULES_API_URL_CREATE}/${courseId}/modules`)
+    const response = await fetch(`${MODULES_API_URL_FINDMODULE}/${courseId}/modules`)
     return await response.json()
 
 }

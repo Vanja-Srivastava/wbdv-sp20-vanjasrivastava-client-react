@@ -5,7 +5,7 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 
 const ModuleListItem = ({module, selectModule, deleteModule, chooseForUpdate}) =>
     <li
-        // onClick={() => selectModule(module)}
+        onClick={() => selectModule(module)}
         className="nav-item module">
         <div>
             <div className="row">

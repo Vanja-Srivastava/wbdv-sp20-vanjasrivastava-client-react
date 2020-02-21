@@ -7,30 +7,51 @@ class LessonTabComponent extends React.Component {
         super(props)
         this.state = {
             lesson: {title: ''},
-            // lessons: this.props.module.lessons,
+            lessons: this.props.lessons,
             formField: '',
             updateVisibility: 'disabled',
             toUpdateId: ''
         };
     }
+    titleChanged = (event) => {
+        this.setState(
+            {
+                lesson: {title: event.target.value},
+                formField: event.target.value
+            });
+    }
 
+    chooseForUpdate = (lesson) => {
+        this.setState({
+            formField: lesson.title,
+            updateVisibility: '',
+            toUpdateId: lesson.id
+        })
+    }
+
+    clearForm = () =>
+        this.setState({
+            formField: '',
+            updateVisibility: 'disabled',
+        })
     render() {
         let lessons = "";
-        // if (this.props.module.lessons) {
-        //     lessons = this.props.module.lessons.map(lesson =>
-        //         <li key={lesson.id} className="nav-item">
-        //             <button className="btn nav-link active courseAction"
-        //                     onClick={() => this.props.selectLesson(lesson)}>{lesson.title} &nbsp;
-        //                 <a onClick={
-        //                     () => this.chooseForUpdate(lesson)
-        //                 }><FontAwesomeIcon icon="pencil-alt" className="fas"/></a>
-        //                 <a onClick={
-        //                     () => this.props.deleteLesson(lesson)
-        //                 }><FontAwesomeIcon icon="times" className="fas"/></a>
-        //             </button>
-        //         </li>
-        //     )
-        // }
+        if (this.props.lessons) {
+            lessons = this.props.lessons.map(lesson =>
+                <li key={lesson.id} className="nav-item">
+                    <button className="btn nav-link active courseAction"
+                            onClick={() => this.props.selectLesson(lesson)} >{lesson.title}&nbsp;
+
+                        <a onClick={() => this.chooseForUpdate(lesson)}>
+                            <FontAwesomeIcon icon="pencil-alt" className="fas"/>
+                        </a>
+                        <a onClick={() => this.props.deleteLesson(lesson)}>
+                            <FontAwesomeIcon icon="times" className="fas"/>
+                        </a>
+                    </button>
+                </li>
+            )
+        }
 
         return (
             <div className="row">
@@ -67,3 +88,9 @@ class LessonTabComponent extends React.Component {
 
 
 export default LessonTabComponent;
+
+
+
+
+
+

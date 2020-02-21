@@ -7,8 +7,9 @@ import TopicPillsComponent from "./TopicPillsComponent";
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import '../../styles/CourseEditorComponent.style.client.css';
-import {createModule, findModulesForCourse, updateModule,deleteModule} from "../../services/ModuleService";
-import {findAllCourses, deleteCourse, createCourse,findCourseById,updateCourse} from "../../services/CourseService";
+import {createModule, findModulesForCourse} from "../../services/ModuleService";
+import {findCourseById} from "../../services/CourseService";
+import {createLesson,deleteLesson,updateLesson,findLessonsForModule} from "../../services/LessonService";
 import {createStore} from 'redux'
 import {Provider} from 'react-redux'
 
@@ -37,7 +38,10 @@ class CourseEditorComponent extends React.Component {
             lesson: {},
             lessons: [],
             topic: [],
-            topics: []
+            topics: [],
+            selectedLessonId: "",
+            selectedModuleId: ""
+
         }
     }
 
@@ -61,6 +65,79 @@ class CourseEditorComponent extends React.Component {
 
     }
 
+   componentDidUpdate(prevProps, prevState, snapshot) {
+       if (prevState.lessons !== this.state.lessons) {
+           this.setState({
+               lessons: this.state.lessons
+           })
+       }
+   }
+
+    selectModule = module => {
+        this.setState({selectedModuleId: module._id})
+        findLessonsForModule(module._id)
+            .then(
+                lessons => {
+                    debugger
+                this.setState({
+                    module: module,
+                    lessons: lessons
+                })
+            })
+
+    }
+
+    selectLesson = lesson => {
+        debugger
+        this.setState({selectedLessonId: lesson._id})
+        findLessonsForModule(this.state.selectedModuleId)
+            .then(
+                lessons => {
+                    debugger
+                    this.setState({
+                        module: module,
+                        lessons: lessons
+                    })
+                })
+
+
+    }
+
+    deleteThisLesson = (lesson) => {
+        let updatedLessons;
+        deleteLesson(this.state.selectedLessonId)
+            .then(() => findLessonsForModule(this.state.selectedModuleId))
+            .then(lessons => updatedLessons = lessons)
+            .then(() =>
+                this.setState({
+                    lessons: updatedLessons
+                })
+            )
+    }
+    createNewLesson = (lesson) => {
+        createLesson(lesson,this.state.selectedModuleId)
+            .then(() => findLessonsForModule(this.state.selectedModuleId))
+            .then((lessons) =>
+                this.setState({
+                    lessons: lessons
+                })
+            )
+
+
+    }
+
+
+    updateThisLesson = lesson => {
+        updateLesson(this.state.selectedLessonId, lesson)
+            .then(() => findLessonsForModule(this.state.selectedModuleId))
+            .then(lessons =>
+                this.setState({
+                    lesson:{},
+                    lessons: lessons
+                })
+            )
+
+    }
 
 
     render() {
@@ -83,22 +160,30 @@ class CourseEditorComponent extends React.Component {
                                id="courseName"> {this.state.course.title} {this.state.course.name} </label>
                     </div>
                     <div className="col-lg-8 col-md-6 col-sm-4 lessonDiv">
-                        {/*<LessonTabComponent*/}
-                        {/*/>*/}
+
+                        <LessonTabComponent
+                            selectLesson={this.selectLesson}
+                            createLesson={this.createNewLesson}
+                            deleteLesson={this.deleteThisLesson}
+                            chooseForUpdate={this.chooseForUpdate}
+                            updateLesson={this.updateThisLesson}
+                            module={this.state.module}
+                            lessons={this.state.lessons}
+                            />
                     </div>
 
 
 
                 </Nav>
 
-                <div className="split left navPaddingTop">
+                <div className="split left navPaddingTop  belowNavBar">
                     {this.state.firstLoad &&
                     <ModuleListComponent
                         selectModule={this.selectModule}
                         currentCourseId = {this.state.courseId}
                         modules={this.state.modules}/>}
                 </div>
-                <div className="split right navPaddingTop">
+                <div className="split right navPaddingTop belowNavBar">
                     <div className="row  text-center topicDiv">
                         {/*<TopicPillsComponent*/}
                         {/*    topics={this.state.topics}*/}
