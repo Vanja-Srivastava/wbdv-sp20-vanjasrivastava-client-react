@@ -10,13 +10,13 @@ export default class TopicPillsItem extends React.Component {
         active: false,
     }
 
-    editTopic = () => {
+    chooseToEditTopic = () => {
         this.setState(prevState => ({
             active: !prevState.active
         }))
     }
 
-    saveTopic = () => {
+    updateTopic = () => {
         this.setState(prevState => ({
             active: !prevState.active
         }))
@@ -39,7 +39,7 @@ export default class TopicPillsItem extends React.Component {
                         }
                         {
                             !this.state.active &&
-                            <button onClick={()=>this.editTopic()}  className="fa fa-pencil p-1 float-left"></button>
+                            <button onClick={()=>this.chooseToEditTopic()} className="fa fa-pencil p-1 float-left"></button>
 
                         }
                         {
@@ -55,7 +55,7 @@ export default class TopicPillsItem extends React.Component {
                         }
                         {
                             this.state.active &&
-                            <button onClick={()=>this.saveTopic()}  className="fa fa-check p-1"></button>
+                            <button onClick={()=>this.updateTopic()} className="fa fa-check p-1"></button>
                         }
                     </div>
                 </div>

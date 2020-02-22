@@ -20,13 +20,13 @@ export default class ModuleListItemComponent extends React.Component {
         }))
     }
 
-    editModule = () => {
+    chooseToEditModule = () => {
         this.setState(prevState => ({
             active: !prevState.active
         }))
     }
 
-    saveModule = () => {
+    updateModule = () => {
         this.setState(prevState => ({
             active: !prevState.active
         }))
@@ -51,7 +51,7 @@ export default class ModuleListItemComponent extends React.Component {
                         }
                         {
                             !this.state.active &&
-                            <button onClick={()=>this.editModule()}  className="fa fa-pencil m-1"></button>
+                            <button onClick={()=>this.chooseToEditModule()} className="fa fa-pencil m-1"></button>
 
                         }
                         {
@@ -67,7 +67,7 @@ export default class ModuleListItemComponent extends React.Component {
                         }
                         {
                             this.state.active &&
-                            <button onClick={()=>this.saveModule()}  className="fa fa-check m-1"></button>
+                            <button onClick={()=>this.updateModule()} className="fa fa-check m-1"></button>
                         }
                     </div>
                 </div>

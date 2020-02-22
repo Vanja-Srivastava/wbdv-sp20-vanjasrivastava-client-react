@@ -13,19 +13,19 @@ export default class LessonListItemComponent extends React.Component {
         selectedLesson : false
     }
 
-    clickLesson = () =>{
+    selectLesson = () =>{
         this.setState((prevState) => {
             return {selectedLesson: !prevState.selectedLesson}
         })
 
     }
-    editLesson = () => {
+    chooseToEditLesson = () => {
         this.setState(prevState => ({
             active: !prevState.active
         }))
     }
 
-    saveLesson = () => {
+    updateLesson = () => {
         this.setState(prevState => ({
             active: !prevState.active
         }))
@@ -44,7 +44,7 @@ export default class LessonListItemComponent extends React.Component {
                             {
                                 !this.state.active && !this.state.selectedLesson &&
                                 <Link to={`/courseeditor/courses/${this.props.courseId}/modules/${
-                                    this.props.moduleId}/lesson/${this.props.lesson._id}`} onClick={()=>this.clickLesson()}>
+                                    this.props.moduleId}/lesson/${this.props.lesson._id}`} onClick={()=>this.selectLesson()}>
                                     <label className="text-white">
                                         {this.props.lesson.title}
                                     </label>
@@ -54,7 +54,7 @@ export default class LessonListItemComponent extends React.Component {
                             {
                                 !this.state.active && this.state.selectedLesson &&
                                 <Link to={`/courseeditor/courses/${this.props.courseId}/modules/${
-                                    this.props.moduleId}/lesson/${this.props.lesson._id}`} onClick={()=>this.clickLesson()}>
+                                    this.props.moduleId}/lesson/${this.props.lesson._id}`} onClick={()=>this.selectLesson()}>
                                     <label className="text-danger">
                                         {this.props.lesson.title}
                                     </label>
@@ -63,7 +63,7 @@ export default class LessonListItemComponent extends React.Component {
                             }
                             {
                                 !this.state.active &&
-                                <button onClick={()=>this.editLesson()}  className="fa fa-pencil p-1 float-left"></button>
+                                <button onClick={()=>this.chooseToEditLesson()} className="fa fa-pencil p-1 float-left"></button>
 
                             }
                             {
@@ -79,7 +79,7 @@ export default class LessonListItemComponent extends React.Component {
                             }
                             {
                                 this.state.active &&
-                                <button onClick={()=>this.saveLesson()}  className="fa fa-check p-1"></button>
+                                <button onClick={()=>this.updateLesson()} className="fa fa-check p-1"></button>
                             }
                         </div>
                     </div>
