@@ -1,148 +1,160 @@
-import React from "react";
-import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
-import CourseTableComponent from "../components/CourseTableComponent";
-import CourseGridComponent from "../components/CourseGridComponent";
-import CourseEditorComponent from "../components/CourseEditor/CourseEditorComponent";
-import {findAllCourses, deleteCourse, createCourse,findCourseById,updateCourse} from "../services/CourseService";
-import CourseManagerNavbarComponent from "../components/CourseManagerNavbarComponent";
+import React, {Component} from 'react'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
+import CourseGrid from '../components/CourseGrid'
+import {deleteCourse, findAllCourses, updateCourse, createCourse} from '../services/CourseService'
+import CourseEditorContainer from './CourseEditorContainer'
+import CourseTable from '../components/CourseTable'
+import NavBarComponent from "../components/NavBarComponent";
 
-class CourseManagerContainer extends React.Component {
-    state = {
+class CourseManagerContainer extends Component {
+    constructor() {
+        super();
 
-        newCourseToBeAddedTitle: '',
-        courseTobeEdited:'',
-        courses: []
+        this.state = {
+            courses: [],
+            layout: 'grid',
+        }
     }
 
     componentDidMount = async () => {
-        const courses = await findAllCourses()
+        const courses = await findAllCourses();
         this.setState({
             courses: courses
         })
-    }
+    };
 
+    updateCourse = async (course) => {
+        await updateCourse(course)
+        const courses = await findAllCourses();
+        this.setState({
+            courses: courses
+        });
+    };
 
-    togglelayout = () =>
-        this.setState(prevState => {
-            if(prevState.layout === 'table') {
-                return ({
-                    layout: 'grid'
-                })
-            } else {
-                return ({
-                    layout: 'table'
-                })
-            }
+    createCourse = async (course) => {
+        const courseIDs = this.state.courses.map(c => c.id);
+        let newCourseId = Math.max.apply(null, courseIDs) + 1;
+        if (newCourseId === -Infinity) {
+            newCourseId = 1
+        }
+        course.id = newCourseId;
+        course.title = "Course " + newCourseId;
+        await createCourse(course);
+        const courses = await findAllCourses();
+        this.setState({
+            courses: courses
+        });
+    };
+
+    deleteCourse = async (course) => {
+        await deleteCourse(course._id);
+        const courses = await findAllCourses();
+        this.setState({
+            courses: courses
         })
+    };
 
+    toggle = () =>
+        this.setState(prevState => {
+            if (prevState.layout === 'table') {
+                return ({layout: 'grid'})
+            } else {
+                return ({layout: 'table'})
+            }
 
-
-    deleteCourse = (course) => {
-        deleteCourse(course._id)
-            .then(findAllCourses)
-            .then(status => {
-                this.setState(prevState => {
-                    return ({
-                        courses: prevState.courses.filter(function (crs) {
-                            return crs._id !== course._id
-                        })
-                    })
-                })
-            })
-    }
-
-
-    getCourseById = (editingcourse) =>
-            findCourseById(editingcourse._id)
-                .then(course => {
-                    this.setState({
-                        courseTobeEdited: course
-                    })
-                })
-
-
-
-    addCourse = (newValue) =>
-        createCourse({
-            title: this.state.newCourseToBeAddedTitle
-        }).then(actualCourse => this.setState(prevState => {
-                return({
-                    courses: [
-                        ...prevState.courses,
-                        actualCourse
-                    ],
-                    newCourseToBeAddedTitle: ""
-                })
-            })
-        )
-
-    updateCourse = (newTitle, newValue) =>
-        updateCourse(newValue._id,{
-            title: newTitle
-        }).then(actualCourse => this.setState(prevState => {
-                return({
-                    courses: [
-                        ...prevState.courses,
-                        actualCourse
-                    ]
-                })
-            })
-        )
-
-    updateForm = (newState) => {
-        this.setState(newState)
-    }
+        });
 
     render() {
-        return(
+        return (
             <div>
                 <Router>
-                    <Route path="/course/:id"
-                           exact
-                           component={(props) => <CourseEditorComponent
-                               {...props}
-                           />}/>
+                    <Route
+                        path="/"
+                        exact={true}
+                        render={() =>
+                            <div>
+                                <NavBarComponent createCourse={this.createCourse}
+                                                 courses={this.state.courses}/>
+                                {<CourseTable courses={this.state.courses}
+                                    toggle={this.toggle}
+                                    deleteCourse={this.deleteCourse}
+                                    updateCourse={this.updateCourse}
+                                    layout={this.state.layout}
+                                    />}
+                            </div>
+                        }/>
+                    <Route
+                        path="/table"
+                        exact={true}
+                        render={() =>
+                            <div>
+                                <NavBarComponent createCourse={this.createCourse}
+                                                 courses={this.state.courses}/>
+                                {<CourseTable courses={this.state.courses}
+                                              toggle={this.toggle}
+                                              deleteCourse={this.deleteCourse}
+                                              updateCourse={this.updateCourse}
+                                              layout={this.state.layout}
+                                />}
+                            </div>
+                        }/>
+                    <Route
+                        path="/grid"
+                        exact={true}
+                        render={() =>
+                            <div>
+                                <NavBarComponent createCourse={this.createCourse}
+                                                 courses={this.state.courses}/>
+                                {<CourseGrid courses={this.state.courses}
+                                             toggle={this.toggle}
+                                             deleteCourse={this.deleteCourse}
+                                             updateCourse={this.updateCourse}
+                                             layout={this.state.layout}
+                                />}
+                            </div>
+                        }/>
+
+                    <Route path="/courseeditor/courses/:courseId"
+                           exact={true}
+                           render={(props) =>
+                               <CourseEditorContainer
+                                   {...props}
+                                   props={props}
+                                   courseId={props.match.params.courseId}
+                                   history={this.props.history}
+                               />}>
+                    </Route>
+
+                    <Route path="/courseeditor/courses/:courseId/modules/:moduleId"
+                           exact={true}
+                           render={(props) =>
+                               <CourseEditorContainer
+                                   {...props}
+                                   props={props}
+                                   key={props.match.params.moduleId}
+                                   courseId={props.match.params.courseId}
+                                   moduleId={props.match.params.moduleId}
+                               />}>
+                    </Route>
 
 
-                    <div>
-                        <CourseManagerNavbarComponent
-                            courseTitle={this.state.newCourseToBeAddedTitle}
-                            enterCourseTitleForNewCourse={this.updateForm}
-                            createCourse={this.addCourse}/>
-
-
-                        <Route path="/(courseList||)/" exact
-                               render={() =>
-                                   <CourseTableComponent
-                                       editCourse = {this.getCourseById}
-                                       deleteCourse={this.deleteCourse}
-                                       updateCourse={this.updateCourse}
-                                       courses={this.state.courses}
-                                       togglelayout={this.togglelayout}/>}/>
-
-
-
-
-                        <Route path='/courseGrid' exact
-                               render={() =>
-                                   <CourseGridComponent
-                                       editCourse = {this.getCourseById}
-                                       updateCourse={this.updateCourse}
-                                       deleteCourse={this.deleteCourse}
-                                       courses={this.state.courses}
-                                       togglelayout={this.togglelayout}
-                                   />}/>
-
-
-                    </div>
+                    <Route path="/courseeditor/courses/:courseId/modules/:moduleId/lesson/:lessonId"
+                           exact={true}
+                           render={(props) =>
+                               <CourseEditorContainer
+                                   {...props}
+                                   props={props}
+                                   key={props.match.params.moduleId}
+                                   courseId={props.match.params.courseId}
+                                   moduleId={props.match.params.moduleId}
+                                   lessonId={props.match.params.lessonId}
+                               />}>
+                    </Route>
 
                 </Router>
-
-
-
             </div>
         )
     }
 }
 
-export default CourseManagerContainer
+export default CourseManagerContainer;
