@@ -15,7 +15,6 @@ class TopicPillsComponent
         };
     }
 
-
     titleChanged = (event) => {
         this.setState(
             {

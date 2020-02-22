@@ -8,7 +8,6 @@ import CourseManagerNavbarComponent from "../components/CourseManagerNavbarCompo
 
 class CourseManagerContainer extends React.Component {
     state = {
-
         newCourseToBeAddedTitle: '',
         courseTobeEdited:'',
         courses: []

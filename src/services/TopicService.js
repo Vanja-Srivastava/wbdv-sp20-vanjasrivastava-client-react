@@ -13,8 +13,6 @@ export const createTopic = (topic,lessonId) =>
         }
     }).then(response => response.json());
 
-
-
 export const findTopicsForLesson = async (lessonId) => {
     const response = await fetch(`${TOPICS_API_URL_FINDTOPICS}/${lessonId}/topics`)
     return response.json()

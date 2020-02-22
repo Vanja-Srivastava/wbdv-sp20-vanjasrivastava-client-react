@@ -11,8 +11,10 @@ import {findModulesForCourse} from "../../services/ModuleService";
 import {findCourseById} from "../../services/CourseService";
 import {createLesson,deleteLesson,updateLesson,findLessonsForModule} from "../../services/LessonService";
 import {createTopic,deleteTopic,updateTopic,findTopicsForLesson} from "../../services/TopicService";
-import {createStore} from 'redux'
-import {Provider} from 'react-redux'
+import moduleReducer from "../../reducers/moduleReducer";
+import {combineReducers, createStore} from "redux";
+import {Provider} from "react-redux";
+
 
 import {
     faArrowUp,
@@ -24,6 +26,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faArrowDown,faArrowUp, faTimes, faCircle, faPlus);
+
+const rootReducer = combineReducers({
+    modules: moduleReducer
+    // lessons: lessonReducer,
+})
+const store = createStore(rootReducer)
 
 class CourseEditorComponent extends React.Component {
     constructor(props) {
@@ -45,21 +53,17 @@ class CourseEditorComponent extends React.Component {
             selectedTopicId: ""
 
         }
+
     }
 
     componentDidMount() {
-        let currentCourse,  currentModules;
+        let currentCourse;
         if (this.state.firstLoad == false) {
-            findCourseById(this.state.courseId)
+            findCourseById(this.props.match.params.id)
                 .then(course => currentCourse = course)
-                .then(() => findModulesForCourse(this.state.courseId))
-                .then(modules => currentModules = modules)
                 .then(() => {
                     this.setState({
                         course: currentCourse,
-
-                        modules: currentModules,
-
                         firstLoad: true
                     })
                 })
@@ -67,24 +71,24 @@ class CourseEditorComponent extends React.Component {
 
     }
 
-   componentDidUpdate(prevProps, prevState, snapshot) {
-       if (prevState.lessons !== this.state.lessons) {
-           this.setState({
-               lessons: this.state.lessons
-           })
-       }
-   }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.lessons !== this.state.lessons) {
+            this.setState({
+                lessons: this.state.lessons
+            })
+        }
+    }
 
     selectModule = module => {
         this.setState({selectedModuleId: module._id})
         findLessonsForModule(module._id)
             .then(
                 lessons => {
-                this.setState({
-                    module: module,
-                    lessons: lessons
+                    this.setState({
+                        module: module,
+                        lessons: lessons
+                    })
                 })
-            })
 
     }
 
@@ -174,7 +178,7 @@ class CourseEditorComponent extends React.Component {
 
     render() {
         return (
-
+            <Provider store={store}>
             <div>
                 <Nav
                     className="navbar navbar-dark bg-dark fixed-top justify-content-start">
@@ -201,7 +205,7 @@ class CourseEditorComponent extends React.Component {
                             updateLesson={this.updateThisLesson}
                             module={this.state.module}
                             lessons={this.state.lessons}
-                            />
+                        />
                     </div>
 
 
@@ -213,7 +217,7 @@ class CourseEditorComponent extends React.Component {
                     <ModuleListComponent
                         selectModule={this.selectModule}
                         currentCourseId = {this.state.courseId}
-                        modules={this.state.modules}/>}
+                        />}
                 </div>
                 <div className="split right navPaddingTop belowNavBar">
                     <div className="row  text-center topicDiv">
@@ -326,6 +330,7 @@ class CourseEditorComponent extends React.Component {
                 </div>
 
             </div>
+            </Provider>
 
         )
     }
