@@ -12,5 +12,5 @@ export const TOPICS_API_URL_CREATE = "https://wbdv-generic-server.herokuapp.com/
 export const TOPICS_API_URL_FINDTOPICS = "https://wbdv-generic-server.herokuapp.com/api/vanjajerry/lessons"
 export const TOPICS_API_URL = "https://wbdv-generic-server.herokuapp.com/api/vanjajerry/topics"
 
-// export const WIDGET_API_URL= "https://cs5610-mukundwagh-hw5server.herokuapp.com/api/"
-export const WIDGET_API_URL= "http://localhost:8080/api/"
+export const WIDGET_API_URL= "https://wbdv-s20-vanja-server-java.herokuapp.com/api/"
+// export const WIDGET_API_URL= "http://localhost:8080/api/"
