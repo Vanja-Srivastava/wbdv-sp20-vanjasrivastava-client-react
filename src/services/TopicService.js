@@ -6,7 +6,7 @@ import {
 
 export const createTopic = (topic,lessonId) =>
 
-    fetch(`${TOPICS_API_URL_CREATE}/${lessonId}/lessons`, {
+    fetch(`${TOPICS_API_URL_CREATE}/${lessonId}/topics`, {
         method: 'POST',
         body: JSON.stringify(topic),
         headers: {
@@ -17,7 +17,7 @@ export const createTopic = (topic,lessonId) =>
 
 
 export const findTopicsForLesson = async (lessonId) => {
-    const response = await fetch(`${TOPICS_API_URL_FINDTOPICS}/${lessonId}/lessons`)
+    const response = await fetch(`${TOPICS_API_URL_FINDTOPICS}/${lessonId}/topics`)
     return response.json()
 
 }
